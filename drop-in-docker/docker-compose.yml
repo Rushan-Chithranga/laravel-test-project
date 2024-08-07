@@ -29,6 +29,8 @@ services:
    dockerfile: ./Dockerfiles/app.Dockerfile
    args:
     UID: $UID
+  ports:
+    - 5173:5173
   volumes:
    - $APP_VOLUMES_SRC:/var/www/html/
    - ./vols/app/docker-user-home/:/home/www-data/
