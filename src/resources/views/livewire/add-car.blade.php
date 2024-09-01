@@ -54,7 +54,7 @@
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Customer option</label>
                             {{-- @dd($batch->customer_name->id) --}}
                             <select wire:model="customer_name" id="customer_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="customer_name" >
-                                <option selected disabled>Choose a Customer</option>
+                                <option selected>Choose a Customer</option>
                                 @foreach($customers as $customer)
                                 {{-- @if ($batch->course_id == $cou->id)
                                 <option selected value={{ $cou->id }}>{{$cou->name}}</option>
@@ -71,7 +71,7 @@
                         </div>
                             <label for="fuel_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select fuel option</label>
                             <select wire:model="fuel_type" id="fuel_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="fuel_type"  >
-                                <option selected disabled>Choose a type</option>
+                                <option selected>Choose a type</option>
                                 <option value="petrol">Petrol</option>
                                 <option value="diesal">Diesal</option>
                             </select>
@@ -79,7 +79,7 @@
                         </div>
                             <label for="transmission" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select transmission option</label>
                             <select wire:model="transmission" id="transmission" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="transmission">
-                                <option selected disabled>Choose a type</option>
+                                <option selected>Choose a type</option>
                                 <option value="Auto">Auto</option>
                                 <option value="Manual">Manual</option>
                                 <option value="Other">Other</option>
@@ -163,7 +163,7 @@
                             </div>
                                 <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Customer option</label>
                                 <select wire:model="updateCustomer_name" id="updateCustomer_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="updateCustomer_name">
-                                    <option selected disabled>Choose a Customer</option>
+                                    <option selected>Choose a Customer</option>
                                     @foreach($customers as $customer)
                                     {{-- @dd($customer); --}}
                                         @if ($customer->id == $customer->id)
@@ -180,7 +180,7 @@
                         </div>
                             <label for="updateFuel_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select fuel option</label>
                             <select wire:model="updateTransmission" id="updateTransmission" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="updateTransmission"  >
-                                <option selected disabled>Choose a type</option>
+                                <option selected>Choose a type</option>
                                 <option value="petrol">Petrol</option>
                                 <option value="diesal">Diesal</option>
                             </select>
@@ -188,7 +188,7 @@
                         </div>
                             <label for="transmission" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select transmission option</label>
                             <select wire:model="transmission" id="transmission" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" name="transmission">
-                                <option selected disabled>Choose a type</option>
+                                <option selected>Choose a type</option>
                                 <option value="Auto">Auto</option>
                                 <option value="Manual">Manual</option>
                                 <option value="Other">Other</option>

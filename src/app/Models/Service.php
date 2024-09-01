@@ -14,4 +14,9 @@ class Service extends Model
     {
         return $this->hasMany(ServiceTask::class);
     }
+
+    public function serviceJobs()
+    {
+        return $this->hasMany(serviceJob::class);
+    }
 }

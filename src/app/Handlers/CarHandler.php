@@ -3,7 +3,6 @@
 namespace App\Handlers;
 
 use App\Models\Car;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class CarHandler
@@ -40,7 +39,7 @@ class CarHandler
     {
 
         $customer = Car::findOrFail($id);
-        
+
         $customer->fill([
             'registration_number' => $register_number,
             'model' => $caModel,

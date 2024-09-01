@@ -8,7 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class serviceJob extends Model
 {
     use HasFactory;
-    protected $fillable = ['NIC', 'email', 'registration_number', 'service_tasks', 'service_status'];
+    protected $fillable = [
+        'NIC',
+        'Customer_name',
+        'registration_number',
+        'Car_modal',
+        'Washing_section',
+        'Washing_section_status',
+        'Washing_section',
+        'Interior_cleaning_section',
+        'Interior_cleaning_section_status',
+        'Service_section',
+        'service_status',
+    ];
 
     protected $casts = [
         'service_tasks' => 'array',
@@ -22,5 +34,14 @@ class serviceJob extends Model
     public function car()
     {
         return $this->belongsTo(Car::class, 'registration_number', 'registration_number');
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+    public function serviceTask()
+    {
+        return $this->belongsTo(serviceTask::class);
     }
 }
