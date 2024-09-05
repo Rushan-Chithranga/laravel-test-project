@@ -2,10 +2,11 @@
 
 namespace App\Handlers;
 
-use App\Models\Car;
 use App\Models\Customer;
-use App\Models\serviceJob;
-use Illuminate\Support\Facades\Session;
+use App\Models\ServiceJob;
+use App\Models\ServiceJobTasks;
+use Illuminate\Support\Facades\DB;
+use Masmerise\Toaster\Toaster;
 
 class ApplyCarForServicesHandler
 {
@@ -32,21 +33,57 @@ class ApplyCarForServicesHandler
 
     public static function createService($customer_name, $NIC, $register_number, $caModel, $Washing_section, $Interior_cleaning_section, $Service_section)
     {
-        $Service_section_json = json_encode($Service_section);
-        $data = [
-            'NIC' => $NIC,
-            'Customer_name' => $customer_name,
-            'registration_number' => $register_number,
-            'Car_modal' => $caModel,
-            'Washing_section' => $Washing_section,
-            'Washing_section_status' => 'Pending',
-            'Interior_cleaning_section' => $Interior_cleaning_section,
-            'Interior_cleaning_section_status' => 'Pending',
-            'Service_section' => $Service_section_json,
-            'service_status' => 'Pending',
-        ];
+        DB::beginTransaction();
 
-        serviceJob::create($data);
-        Session::flash('success', 'Car Created Successfully!!');
+        try {
+            if (!is_array($Service_section)) {
+                $Service_section = [$Service_section];
+            }
+
+            $data = [
+                'NIC' => $NIC,
+                'Customer_name' => $customer_name,
+                'registration_number' => $register_number,
+                'Car_modal' => $caModel,
+                'Washing_section' => 'Running',
+                'Interior_cleaning_section' => 'Running',
+                'Service_section' => 'Running',
+            ];
+
+            $services = ServiceJob::create($data);
+
+            if ($services) {
+                ServiceJobTasks::create([
+                    'services' => 'Washing section',
+                    'service_tasks' => $Washing_section,
+                    'services_id' => $services->id,
+                    'service_task_status' => 'Pending'
+                ]);
+
+                ServiceJobTasks::create([
+                    'services' => 'Interior cleaning section',
+                    'service_tasks' => $Interior_cleaning_section,
+                    'services_id' => $services->id,
+                    'service_task_status' => 'Pending'
+                ]);
+
+                foreach ($Service_section as $service_section) {
+                    ServiceJobTasks::create([
+                        'services' => 'Service section',
+                        'service_tasks' => $service_section,
+                        'services_id' => $services->id,
+                        'service_task_status' => 'Pending'
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            Toaster::success('Services Created Successfully!!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Toaster::error('Failed to create services. Please try again.');
+            throw $e;
+        }
     }
 }

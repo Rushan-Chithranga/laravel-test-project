@@ -8,6 +8,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Masmerise\Toaster\Toaster;
 
 class AddCar extends Component
 {
@@ -17,10 +18,10 @@ class AddCar extends Component
 
     public $search;
     public $customerSearch;
-    public $registration_number, $carModel, $fuel_type, $transmission ,$customer_name;
-    public $updareRegistration_number, $updateCarModel, $updateFuel_type, $updateTransmission ,$updateCustomer_name, $updateCar_id;
+    public $registration_number, $carModel, $fuel_type, $transmission, $customer_name;
+    public $updareRegistration_number, $updateCarModel, $updateFuel_type, $updateTransmission, $updateCustomer_name, $updateCar_id;
     public $updateCars;
-    public $deleteCars ,$deleteCarName;
+    public $deleteCars, $deleteCarName;
     public $addCar = false;
     public $updateCar = false;
     public $deleteCar = false;
@@ -37,7 +38,6 @@ class AddCar extends Component
         $this->fuel_type = '';
         $this->transmission = '';
         $this->customer_name = '';
-
     }
 
     public function __construct()
@@ -55,7 +55,7 @@ class AddCar extends Component
             $cars = $this->carHandler->carSearch($this->search, $this->customerSearch);
         }
 
-        return view('livewire.add-car',['cars' => $cars, 'customers' => $customers]);
+        return view('livewire.add-car', ['cars' => $cars, 'customers' => $customers]);
     }
     public function searchCustomer()
     {
@@ -115,8 +115,7 @@ class AddCar extends Component
             $this->resetFields();
             $this->addCarModalClose();
         } catch (\Exception $e) {
-            dd($e);
-            Session::flash('error', 'Something goes wrong while creating car!!');
+            Toaster::error( 'Something goes wrong while creating car!!');
             $this->resetFields();
             $this->addCarModalClose();
         }
@@ -133,8 +132,7 @@ class AddCar extends Component
             $this->carHandler->updateCar($this->updateCar_id, $this->updareRegistration_number, $this->updateCarModel, $this->updateFuel_type, $this->updateTransmission,  $this->updateCustomer_name);
             $this->updateyModalClose();
         } catch (\Exception $e) {
-            dd($e);
-            Session::flash('error', 'Something goes wrong while updating car!!');
+            Toaster::error('Something goes wrong while updating car!!');
             $this->updateyModalClose();
         }
     }
@@ -145,11 +143,13 @@ class AddCar extends Component
 
             $this->carHandler->deleteCar($this->deleteCars->id);
             $this->deleteModalClose();
-
         } catch (\Exception $e) {
-            dd($e);
-            Session::flash('error', 'Something goes wrong while deleting customer!!');
+            Toaster::error('Something goes wrong while deleting customer!!');
             $this->deleteModalClose();
         }
+    }
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 }

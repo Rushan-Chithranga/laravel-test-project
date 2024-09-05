@@ -19,12 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('registration_number');
             $table->foreign('registration_number')->references('registration_number')->on('cars')->onUpdate('cascade')->onDelete('cascade');
             $table->string('Car_modal');
-            $table->json('Washing_section')->nullable();
-            $table->string('Washing_section_status')->nullable();
-            $table->json('Interior_cleaning_section')->nullable();
-            $table->string('Interior_cleaning_section_status')->nullable();
-            $table->json('Service_section')->nullable();
-            $table->string('service_status')->nullable();
+            $table->string('Washing_section')->nullable();
+            $table->string('Interior_cleaning_section')->nullable();
+            $table->string('Service_section')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

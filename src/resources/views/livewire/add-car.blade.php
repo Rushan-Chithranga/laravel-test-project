@@ -302,7 +302,7 @@
                                 <form class="flex items-center max-w-md justify-end gap-3">
                                     <label for="simple-search" class="sr-only">Search</label>
                                     <input type="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search ..."
-                                    wire:model="search" />
+                                    wire:model.live.debounce.500ms="search" />
                                     <select wire:model="customerSearch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="Default select example" name="category">
                                         <option selected  value="">All</option>
                                         @foreach ($customers as $customer )

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Service;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_tasks', function (Blueprint $table) {
+        Schema::create('service_job_tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('task_name');
-            $table->integer('price');
-            $table->foreignId('service_id');
-            $table->foreign('service_id')->references('id')->on('services')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('services');
+            $table->string('service_tasks');
+            $table->unsignedBigInteger('services_id');
+            $table->foreign('services_id')->references('id')->on('service_jobs')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('service_task_status');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_tasks');
+        Schema::dropIfExists('service_job_tasks');
     }
 };

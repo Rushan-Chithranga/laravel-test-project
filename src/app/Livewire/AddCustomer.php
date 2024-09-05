@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Masmerise\Toaster\Toaster;
 
 class AddCustomer extends Component
 {
@@ -115,7 +116,7 @@ class AddCustomer extends Component
             $this->resetFields();
             $this->customerModalClose();
         } catch (\Exception $e) {
-            Session::flash('error', 'Something goes wrong while creating customer!!');
+            Toaster::error( 'Something goes wrong while creating customer!!');
             $this->resetFields();
             $this->customerModalClose();
         }
@@ -135,7 +136,7 @@ class AddCustomer extends Component
             $this->customerHandler->updateCustomer($this->updateCustomer_id, $this->updateName, $this->updateNIC, $this->updateEmail, $this->updatePhone,  $this->updateAddress);
             $this->updateyModalClose();
         } catch (\Exception $e) {
-            Session::flash('error', 'Something goes wrong while updating customer!!');
+            Toaster::error( 'Something goes wrong while updating customer!!');
             $this->updateyModalClose();
         }
     }
@@ -148,8 +149,11 @@ class AddCustomer extends Component
             $this->deleteModalClose();
 
         } catch (\Exception $e) {
-            Session::flash('error', 'Something goes wrong while deleting customer!!');
+            Toaster::error( 'Something goes wrong while deleting customer!!');
             $this->deleteModalClose();
         }
+    }
+    public function updatingSearch(){
+        $this->resetPage();
     }
 }

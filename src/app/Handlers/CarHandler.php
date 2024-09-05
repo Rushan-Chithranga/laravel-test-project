@@ -4,6 +4,7 @@ namespace App\Handlers;
 
 use App\Models\Car;
 use Illuminate\Support\Facades\Session;
+use Masmerise\Toaster\Toaster;
 
 class CarHandler
 {
@@ -11,16 +12,15 @@ class CarHandler
     {
 
         return Car::query()
-        ->when($search, function ($query, $search) {
-            $query->where('registration_number', 'like', '%' . $search . '%');
-        })
-        ->when($customerSearch, function ($query, $customerSearch) {
-            $query->where('customer_id', $customerSearch);
-        })
-        ->paginate(8);
-
+            ->when($search, function ($query, $search) {
+                $query->where('registration_number', 'like', '%' . $search . '%');
+            })
+            ->when($customerSearch, function ($query, $customerSearch) {
+                $query->where('customer_id', $customerSearch);
+            })
+            ->paginate(8);
     }
-    public static function createCar($register_number, $caModel, $fuel_type, $transmission ,$customer_name )
+    public static function createCar($register_number, $caModel, $fuel_type, $transmission, $customer_name)
     {
         $data = [
             'registration_number' => $register_number,
@@ -31,11 +31,11 @@ class CarHandler
         ];
 
         Car::create($data);
-        Session::flash('success', 'Car Created Successfully!!');
+        Toaster::success('Car Created Successfully!!');
     }
 
 
-    public static function updateCar($id,$register_number, $caModel, $fuel_type, $transmission ,$customer_name)
+    public static function updateCar($id, $register_number, $caModel, $fuel_type, $transmission, $customer_name)
     {
 
         $customer = Car::findOrFail($id);
@@ -48,15 +48,14 @@ class CarHandler
             'customer_id' => $customer_name,
         ])->save();
 
-        Session::flash('success', 'Car Updated Successfully!!');
+        Toaster::success('Car Updated Successfully!!');
     }
 
     public static function deleteCar($id)
     {
         $car = Car::findOrFail($id);
         $car->delete();
-        Session::flash('success', 'Customer Deleted Successfully!!');
+        Toaster::success('Customer Deleted Successfully!!');
         return redirect(request()->header('Referer'));
-
     }
 }

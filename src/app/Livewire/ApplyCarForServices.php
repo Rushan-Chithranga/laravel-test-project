@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\ServiceTask;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use Masmerise\Toaster\Toaster;
 
 class ApplyCarForServices extends Component
 {
@@ -61,7 +62,7 @@ class ApplyCarForServices extends Component
                 $this->noDataFound = false;
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Something went wrong while searching for the car!');
+            Toaster::error( 'Something went wrong while searching for the car!');
         }
     }
 
@@ -96,8 +97,7 @@ class ApplyCarForServices extends Component
             $this->resetFields();
             $this->closeAddServiceModal();
         } catch (\Exception $e) {
-            dd($e);
-            Session::flash('error', 'Something goes wrong while creating car!!');
+            Toaster::error( 'Something goes wrong while creating car!!');
             $this->resetFields();
             $this->closeAddServiceModal();
         }

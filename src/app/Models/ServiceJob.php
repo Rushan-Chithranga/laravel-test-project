@@ -4,22 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class serviceJob extends Model
+class ServiceJob extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'NIC',
         'Customer_name',
         'registration_number',
         'Car_modal',
         'Washing_section',
-        'Washing_section_status',
-        'Washing_section',
         'Interior_cleaning_section',
-        'Interior_cleaning_section_status',
         'Service_section',
-        'service_status',
     ];
 
     protected $casts = [
@@ -40,8 +38,9 @@ class serviceJob extends Model
     {
         return $this->belongsTo(Service::class);
     }
-    public function serviceTask()
+
+    public function serviceJobsTasks()
     {
-        return $this->belongsTo(serviceTask::class);
+        return $this->belongsToMany(ServiceJobTasks::class);
     }
 }

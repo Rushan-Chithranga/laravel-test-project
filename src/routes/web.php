@@ -5,6 +5,7 @@ use App\Http\Middleware\IsAdmin;
 use App\Livewire\AddCar;
 use App\Livewire\AddCustomer;
 use App\Livewire\ApplyCarForServices;
+use App\Livewire\ServicesView;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +23,7 @@ Route::middleware([
     Route::get('/customer', AddCustomer::class)->name('customer');
     Route::get('/car', AddCar::class)->name('car');
     Route::get('/services', ApplyCarForServices::class)->name('services');
+    Route::get('/services-view', ServicesView::class)->name('services-view');
 });
 
 

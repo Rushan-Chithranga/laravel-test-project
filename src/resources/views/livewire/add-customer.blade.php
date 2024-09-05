@@ -289,7 +289,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="py-12 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class=" w-full">
@@ -311,7 +311,7 @@
                                 <form class="flex items-center max-w-md justify-end">
                                     <label for="simple-search" class="sr-only">Search</label>
                                     <input type="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search ..."
-                                    wire:model="search" />
+                                    wire:model.live.debounce.500ms="search" />
                                     <button
                                     wire:click.prevent="searchCustomer"
                                     type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-green-700 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
