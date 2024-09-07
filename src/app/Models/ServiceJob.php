@@ -18,6 +18,8 @@ class ServiceJob extends Model
         'Washing_section',
         'Interior_cleaning_section',
         'Service_section',
+        'Estimated_finish_time',
+        'Percentage',
     ];
 
     protected $casts = [

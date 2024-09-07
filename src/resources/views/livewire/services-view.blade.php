@@ -245,9 +245,11 @@
                                             <th class="w-3/12 py-2 px-3 text-left">Owner name</th>
                                             <th class="w-2/12 py-2 px-3 text-left">Reg Number</th>
                                             <th class="w-2/12 py-2 px-3 text-left">Car Modal</th>
+                                            <th class="w-2/12 py-2 px-3 text-left">Finish precentage</th>
                                             <th class="w-2/12 py-2 px-3 text-left">Washing Status</th>
                                             <th class="w-2/12 py-2 px-3 text-left">Interior Status</th>
                                             <th class="w-2/12 py-2 px-3 text-left">Service Status</th>
+                                            <th class="w-2/12 py-2 px-3 text-left">Finish times</th>
                                             <th class="w-2/12 py-2 px-3 text-left"></th>
                                         </tr>
                                     </thead>
@@ -264,6 +266,11 @@
                                                     <td class="py-5 px-3">{{ $ServicesJob->Customer_name }}</td>
                                                     <td class="py-5 px-3">{{ $ServicesJob->registration_number }}</td>
                                                     <td class="py-5 px-3">{{ $ServicesJob->Car_modal }}</td>
+                                                    <td class="py-5 px-3 flex justify-center">
+                                                        <span class="font-bold rounded px-2 py-1">
+                                                            {{ number_format($ServicesJob->Percentage, 2) }}%
+                                                        </span>
+                                                    </td>
 
                                                     <td class="py-5 px-3 text-center">
                                                         <span
@@ -296,12 +303,40 @@
                                                             {{ $ServicesJob->Service_section }}
                                                         </span>
                                                     </td>
-                                                    <td class="py-5 px-3 text-center">
-                                                        <button type="button"
-                                                            wire:click="openViewServiceModal({{ $ServicesJob->id }})"
-                                                            class="shadow-[5px_5px_0px_0px_rgba(109,40,217)] text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">View
-                                                        </button>
+                                                    <td class="py-5 px-3 flex justify-center">
+                                                        <span class="font-bold rounded px-2  py-1">
+                                                            @php
+                                                                $created_at = \Carbon\Carbon::parse(
+                                                                    $ServicesJob->created_at,
+                                                                );
+                                                                $estimatedTime = $ServicesJob->Estimated_finish_time;
+
+                                                                $finishTime = $created_at->addHours($estimatedTime);
+                                                            @endphp
+                                                            {{ $finishTime->format('g:i A') }}
+                                                        </span>
+
                                                     </td>
+
+                                                    <td class="py-5 px-3 text-center">
+                                                        @if (
+                                                            $ServicesJob->Washing_section == 'Pending' &&
+                                                                $ServicesJob->Interior_cleaning_section == 'Pending' &&
+                                                                $ServicesJob->Service_section == 'Pending')
+                                                            <button type="button"
+                                                                wire:click="serviceConformation({{ $ServicesJob->id }})"
+                                                                class="shadow-lg text-gray-900 bg-gray-200 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                                                Confirm
+                                                            </button>
+                                                        @else
+                                                            <button type="button"
+                                                                wire:click="openViewServiceModal({{ $ServicesJob->id }})"
+                                                                class="shadow-lg text-gray-900 bg-gray-200 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                                                View
+                                                            </button>
+                                                        @endif
+                                                    </td>
+
                                                 </tr>
                                             @endforeach
                                         @endif

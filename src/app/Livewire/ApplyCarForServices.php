@@ -7,7 +7,6 @@ use App\Models\Car;
 use App\Models\Customer;
 use App\Models\Service;
 use App\Models\ServiceTask;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
 
@@ -97,9 +96,9 @@ class ApplyCarForServices extends Component
             $this->resetFields();
             $this->closeAddServiceModal();
         } catch (\Exception $e) {
-            Toaster::error( 'Something goes wrong while creating car!!');
             $this->resetFields();
             $this->closeAddServiceModal();
+            Toaster::error( 'Something goes wrong while creating car!!');
         }
     }
 }

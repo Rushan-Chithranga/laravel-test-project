@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ServiceTask extends Model
 {
-    use HasFactory , SoftDeletes;
-    protected $fillable = ['task_name','price','service_id'];
+    use HasFactory, SoftDeletes;
+    protected $fillable = ['task_name', 'price', 'estimate_time', 'service_id'];
 
     public function service()
     {
@@ -20,5 +20,4 @@ class ServiceTask extends Model
     {
         return $this->hasMany(serviceJob::class);
     }
-
 }

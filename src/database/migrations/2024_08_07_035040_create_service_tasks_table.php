@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('task_name');
             $table->integer('price');
+            $table->integer('estimate_time');
             $table->foreignId('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();

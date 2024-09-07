@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('Washing_section')->nullable();
             $table->string('Interior_cleaning_section')->nullable();
             $table->string('Service_section')->nullable();
+            $table->integer('Estimated_finish_time')->nullable();
+            $table->float('Percentage')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

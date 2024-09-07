@@ -33,7 +33,6 @@
                                 @foreach ($services as $service)
                                     @if ($service->service_name === 'Washing section')
                                         @foreach ($servicesTasks as $servicesTask)
-                                        {{-- @dd($servicesTask->task_name); --}}
                                             @if ($servicesTask->service_id == $service->id)
                                                 <div class="flex items-center mb-4">
                                                     <input id="washing_{{ $servicesTask->id }}" type="radio"

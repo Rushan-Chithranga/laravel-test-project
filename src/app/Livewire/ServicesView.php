@@ -9,12 +9,24 @@ use Masmerise\Toaster\Toaster;
 
 class ServicesView extends Component
 {
-
     public $statusType;
     public $jobTasks = [];
+    public $ServicesJobs = [];
     public $viewDetais = false;
 
+    public function calculateCompletionPercentage($serviceJobId)
+    {
+        $totalTasks = ServiceJobTasks::where('services_id', $serviceJobId)->count();
+        $completedTasks = ServiceJobTasks::where('services_id', $serviceJobId)
+            ->where('service_task_status', 'Completed')
+            ->count();
 
+        if ($totalTasks > 0) {
+            return ($completedTasks / $totalTasks) * 100;
+        }
+
+        return 0;
+    }
 
     public function openViewServiceModal($id)
     {
@@ -42,13 +54,17 @@ class ServicesView extends Component
             $serviceJob->save();
         }
 
-        $service = ServiceJob::find($serviceJobId);
+        $service = ServiceJob::findOrFail($serviceJobId);
 
         if ($service) {
             $service->Washing_section = ($newStatus == 'Completed') ? 'Completed' : 'Running';
             $service->save();
         }
 
+        $service->Percentage = $this->calculateCompletionPercentage($serviceJobId);
+        $service->save();
+
+        $this->ServicesJobs = ServiceJob::all();
         $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJobId)->get();
 
         Toaster::success('Status updated successfully.');
@@ -68,13 +84,18 @@ class ServicesView extends Component
             $serviceJob->service_task_status = $newStatus;
             $serviceJob->save();
         }
-        $service = ServiceJob::find($serviceJobId);
+
+        $service = ServiceJob::findOrFail($serviceJobId);
 
         if ($service) {
             $service->Interior_cleaning_section = ($newStatus == 'Completed') ? 'Completed' : 'Running';
             $service->save();
         }
 
+        $service->Percentage = $this->calculateCompletionPercentage($serviceJobId);
+        $service->save();
+
+        $this->ServicesJobs = ServiceJob::all();
         $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJobId)->get();
 
         Toaster::success('Status updated successfully.');
@@ -86,6 +107,7 @@ class ServicesView extends Component
 
         if ($serviceJob && $serviceJob->services == 'Service section') {
             $tasks = explode("\n", $serviceJob->service_tasks);
+
             if (isset($tasks[$taskIndex])) {
                 $tasks[$taskIndex] = $newStatus;
                 $serviceJob->service_task_status = implode("\n", $tasks);
@@ -99,25 +121,37 @@ class ServicesView extends Component
                     return $task->service_task_status === 'Completed';
                 });
 
-            $service = ServiceJob::find($serviceJob->services_id);
+            $service = ServiceJob::findOrFail($serviceJob->services_id);
             if ($service) {
                 $service->Service_section = $allTasksCompleted ? 'Completed' : 'Running';
                 $service->save();
             }
 
+            $service->Percentage = $this->calculateCompletionPercentage($serviceJob->services_id);
+            $service->save();
+
+            $this->ServicesJobs = ServiceJob::all();
             $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJob->services_id)->get();
 
             Toaster::success('Status updated successfully.');
         }
     }
 
+    public function serviceConformation($serviceId)
+    {
+        $service = ServiceJob::findOrFail($serviceId);
+
+        if ($service) {
+            $service->Washing_section = 'Running';
+            $service->Interior_cleaning_section =  'Running';
+            $service->Service_section =  'Running';
+            $service->save();
+        }
+    }
+
     public function render()
     {
-
-        $allJobs = ServiceJob::all();
-        return view('livewire.services-view', [
-            'ServicesJobs' => $allJobs,
-
-        ]);
+        $this->ServicesJobs = ServiceJob::all();
+        return view('livewire.services-view');
     }
 }
