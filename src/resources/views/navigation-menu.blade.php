@@ -40,8 +40,8 @@
                 @endif
                 @if (Auth::user() && Auth::user()->role_id == \App\Constants\RoleTypeConstants::CUSTOMER)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link href="{{ route('customer') }}" :active="request()->routeIs('customer')">
-                            {{ __('Customers') }}
+                        <x-nav-link href="{{ route('customer-view') }}" :active="request()->routeIs('customer-view')">
+                            {{ __('Customer') }}
                         </x-nav-link>
                     </div>
                 @endif

@@ -115,7 +115,7 @@ class AddCar extends Component
             $this->resetFields();
             $this->addCarModalClose();
         } catch (\Exception $e) {
-            Toaster::error( 'Something goes wrong while creating car!!');
+            Toaster::error('Something goes wrong while creating car!!');
             $this->resetFields();
             $this->addCarModalClose();
         }

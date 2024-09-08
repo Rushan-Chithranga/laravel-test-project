@@ -4,6 +4,7 @@ use App\Http\Middleware\IsAdmin;
 use App\Livewire\AddCar;
 use App\Livewire\AddCustomer;
 use App\Livewire\ApplyCarForServices;
+use App\Livewire\CustomerView;
 use App\Livewire\ServicesView;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,5 @@ Route::middleware([
     Route::get('/customer-dashboard', function () {
         return view('customer.dashboard');
     })->name('customer.dashboard');
+    Route::get('/customer-view', CustomerView::class)->name('customer-view');
 });
