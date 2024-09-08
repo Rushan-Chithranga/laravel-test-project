@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Middleware\IsAdmin;
 use App\Livewire\AddCar;
 use App\Livewire\AddCustomer;
@@ -14,12 +13,14 @@ Route::get('/', function () {
 
 Route::middleware([
     'auth:sanctum',
+    IsAdmin::class,
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
     Route::get('/customer', AddCustomer::class)->name('customer');
     Route::get('/car', AddCar::class)->name('car');
     Route::get('/services', ApplyCarForServices::class)->name('services');
@@ -27,7 +28,12 @@ Route::middleware([
 });
 
 
-Route::middleware(['auth', IsAdmin::class])->group(function () {
-
-    Route::get('/admin/dashboard', [AdminController::class, 'AdminView'])->name('admin.dashboard');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/customer-dashboard', function () {
+        return view('customer.dashboard');
+    })->name('customer.dashboard');
 });

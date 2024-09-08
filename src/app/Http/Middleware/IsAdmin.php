@@ -19,8 +19,7 @@ class IsAdmin
     {
         if (Auth::user()->role_id ==  RoleTypeConstants::ADMIN) {
             return $next($request);
-        } else {
-           return back();
         }
+        return redirect()->route('customer.dashboard');
     }
 }
