@@ -210,7 +210,7 @@
                     @endforeach
 
                     <div>
-                        <button type="button" wire:click="create" x-on:click="isOpen = true"
+                        <button type="button" @click="isOpen = false"
                             class="shadow-lg text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                             Close
                         </button>
@@ -349,3 +349,4 @@
             </div>
         </div>
     </div>
+</div>

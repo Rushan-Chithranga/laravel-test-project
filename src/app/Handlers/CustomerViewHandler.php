@@ -7,7 +7,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Masmerise\Toaster\Toaster;
 
-class CustomerVIewHandler
+class CustomerViewHandler
 {
     public static function CustomerSearch($search)
     {
