@@ -2,8 +2,13 @@
 
 namespace App\Handlers;
 
+use App\Mail\JobCompletedMail;
+use App\Mail\sendCredintialMail;
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Masmerise\Toaster\Toastable;
 use Masmerise\Toaster\Toaster;
 
@@ -21,18 +26,35 @@ class CustomerHandler
     }
     public static function createCustomer($name, $NIC, $email, $phone, $address, $password)
     {
+        try {
+            DB::beginTransaction();
+            $data = [
+                'name' => $name,
+                'NIC' => $NIC,
+                'email' => $email,
+                'phone' => $phone,
+                'address' => $address,
+                'password' => Hash::make($password),
+            ];
 
-        $data = [
-            'name' => $name,
-            'NIC' => $NIC,
-            'email' => $email,
-            'phone' => $phone,
-            'address' => $address,
-            'password' => Hash::make($password),
-        ];
+            $user = [
+                'name' => $name,
+                'email' => $email,
+                'password' => Hash::make($password),
+            ];
 
-        Customer::create($data);
-        Toaster::success('Customer Created Successfully!!');
+            User::create($user);
+            Customer::create($data);
+            Mail::to($email)->send(new sendCredintialMail($email, $name, $password));
+            DB::commit();
+            Toaster::success('Email sent successfully');
+            Toaster::success('Customer Created Successfully!!');
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            Toaster::error('Failed to create customer. Please try again.');
+            throw $e;
+        }
     }
 
 

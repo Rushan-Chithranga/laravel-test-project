@@ -1,4 +1,4 @@
-<div>
+<div x-cloak>
     <div x-data="{ isOpen: $wire.entangle('viewDetais') }">
         <div x-show="isOpen" x-on:click.outside="isOpen = false"
             class="flex fixed inset-0 z-40 min-h-full overflow-y-auto overflow-x-hidden transition items-center justify-center">

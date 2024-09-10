@@ -1,2 +1,4 @@
-import './bootstrap';
-import '../../vendor/masmerise/livewire-toaster/resources/js';
+import "./bootstrap";
+import "../../vendor/masmerise/livewire-toaster/resources/js";
+
+

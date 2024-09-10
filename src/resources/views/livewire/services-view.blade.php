@@ -1,4 +1,4 @@
-<div>
+<div x-cloak>
     {{-- Car Create Modal --}}
     <div x-data="{ isOpen: $wire.entangle('viewDetais') }">
         <div x-show="isOpen" x-on:click.outside="isOpen = false"

@@ -1,4 +1,4 @@
-<div>
+<div x-cloak>
     {{-- Services Add Modal --}}
     <div x-data="{ isOpen: $wire.entangle('addService') }">
         <div x-show="isOpen" x-on:click.outside="isOpen = false"

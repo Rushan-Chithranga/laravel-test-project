@@ -1,7 +1,8 @@
-<div>
+<div x-cloak>
     {{-- Car Create Modal --}}
     <div x-data="{ isOpen: $wire.entangle('addCar')}">
         <div
+
         x-show="isOpen"
         x-on:click.outside="isOpen = false"
         class="flex fixed inset-0 z-40 min-h-full overflow-y-auto overflow-x-hidden transition items-center justify-center"
@@ -334,6 +335,7 @@
                                         @else
                                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                                 @foreach($cars as $car)
+                                                {{-- @dd($car->customer->name); --}}
                                                 <div class="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transform transition-all hover:translate-y-2">
                                                     <img src="https://img.freepik.com/premium-vector/car-svg-bundle-car-svg-racecar-svg-sports-car-svg_650032-457.jpg" alt="Customers Image" class="w-full h-48 object-cover">
                                                     <div class="p-4">

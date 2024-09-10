@@ -28,7 +28,7 @@ class ServiceJob extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'NIC', 'NIC');
+        return $this->hasmany(Customer::class, 'NIC', 'NIC');
     }
 
     public function car()

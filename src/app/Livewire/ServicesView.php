@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Mail\JobCompletedMail;
+use App\Models\Customer;
 use App\Models\ServiceJob;
 use App\Models\ServiceJobTasks;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
 
@@ -26,6 +29,23 @@ class ServicesView extends Component
         }
 
         return 0;
+    }
+
+    public function checkIfAllCompleted($serviceJobId)
+    {
+        $service = ServiceJob::findOrFail($serviceJobId);
+
+        if ($service->Washing_section == 'Completed' && $service->Interior_cleaning_section == 'Completed' && $service->Service_section == 'Completed') {
+
+            $this->sendCompletionEmail($service);
+        }
+    }
+
+    public function sendCompletionEmail($serviceJob)
+    {
+        $customer_email = Customer::where('NIC', $serviceJob->NIC)->get();
+        Mail::to($customer_email)->send(new JobCompletedMail($serviceJob));
+        Toaster::success('All sections completed! Email sent to the customer.');
     }
 
     public function openViewServiceModal($id)
@@ -67,6 +87,8 @@ class ServicesView extends Component
         $this->ServicesJobs = ServiceJob::all();
         $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJobId)->get();
 
+        $this->checkIfAllCompleted($serviceJobId);
+
         Toaster::success('Status updated successfully.');
     }
 
@@ -98,6 +120,8 @@ class ServicesView extends Component
         $this->ServicesJobs = ServiceJob::all();
         $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJobId)->get();
 
+        $this->checkIfAllCompleted($serviceJobId);
+
         Toaster::success('Status updated successfully.');
     }
 
@@ -105,37 +129,53 @@ class ServicesView extends Component
     {
         $serviceJob = ServiceJobTasks::where('id', $serviceJobId)->first();
 
-        if ($serviceJob && $serviceJob->services == 'Service section') {
-            $tasks = explode("\n", $serviceJob->service_tasks);
-
-            if (isset($tasks[$taskIndex])) {
-                $tasks[$taskIndex] = $newStatus;
-                $serviceJob->service_task_status = implode("\n", $tasks);
-                $serviceJob->save();
-            }
-
-            $allTasksCompleted = ServiceJobTasks::where('services_id', $serviceJob->services_id)
-                ->where('services', 'Service section')
-                ->get()
-                ->every(function ($task) {
-                    return $task->service_task_status === 'Completed';
-                });
-
-            $service = ServiceJob::findOrFail($serviceJob->services_id);
-            if ($service) {
-                $service->Service_section = $allTasksCompleted ? 'Completed' : 'Running';
-                $service->save();
-            }
-
-            $service->Percentage = $this->calculateCompletionPercentage($serviceJob->services_id);
-            $service->save();
-
-            $this->ServicesJobs = ServiceJob::all();
-            $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJob->services_id)->get();
-
-            Toaster::success('Status updated successfully.');
+        if (!$serviceJob) {
+            Toaster::error('Service Job Task not found');
+            return;
         }
+
+        if ($serviceJob->services != 'Service section') {
+            Toaster::error('Invalid service section');
+            return;
+        }
+
+        $tasks = explode("\n", $serviceJob->service_tasks);
+
+        if (!isset($tasks[$taskIndex])) {
+            Toaster::error('Invalid task index');
+            return;
+        }
+
+        $tasks[$taskIndex] = $newStatus;
+        $serviceJob->service_task_status = implode("\n", $tasks);
+        $serviceJob->save();
+
+        $allTasksCompleted = ServiceJobTasks::where('services_id', $serviceJob->services_id)
+            ->where('services', 'Service section')
+            ->get()
+            ->every(function ($task) {
+                return $task->service_task_status === 'Completed';
+            });
+
+        $service = ServiceJob::find($serviceJob->services_id);
+
+        if (!$service) {
+            Toaster::error('Service job not found');
+            return;
+        }
+
+        $service->Service_section = $allTasksCompleted ? 'Completed' : 'Running';
+        $service->Percentage = $this->calculateCompletionPercentage($serviceJob->services_id);
+        $service->save();
+
+        $this->ServicesJobs = ServiceJob::all();
+        $this->jobTasks = ServiceJobTasks::where('services_id', $serviceJob->services_id)->get();
+
+        $this->checkIfAllCompleted($serviceJob->services_id);
+
+        Toaster::success('Status updated successfully.');
     }
+
 
     public function serviceConformation($serviceId)
     {
